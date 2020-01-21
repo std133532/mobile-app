@@ -1,0 +1,57 @@
+[{
+        "name": { "en": "Liontaria", "gr": "Λιοντάρια" },
+        "description": "mpla mpla mpla mpla mpla mplampla mpla mplampla mpla mplampla mpla mpla ",
+        "category": "culture",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Morozini_Fontein_Heraklion.jpg",
+        "url": "",
+        "points": 9,
+        "lat": 35.339095,
+        "lng": 25.133264
+    },
+
+    {
+        "name": { "en": "Logia", "gr": "Λότζια" },
+        "description": "mpla mpla mpla mpla mpla mplampla mpla mplampla mpla mplampla mpla mpla ",
+        "category": "culture",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/4/47/Kreta_-_Iraklion_-_Venezianische_Loggia.jpg",
+        "url": "",
+        "points": 9,
+        "lat": 35.339795,
+        "lng": 25.134155
+    },
+
+    {
+        "name": { "en": "Knosos", "gr": "Κνωσός" },
+        "description": "mpla mpla mpla mpla mpla mplampla mpla mplampla mpla mplampla mpla mpla ",
+        "category": "culture",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/e/ea/Knossos_-_North_Portico_02.jpg",
+        "url": "",
+        "points": 10,
+        "lat": 35.298244,
+        "lng": 25.160993
+    },
+
+    {
+        "name": { "en": "Kazantzakis Grave", "gr": "Τάφος Καζαντζάκη" },
+        "description": "mpla mpla mpla mpla mpla mplampla mpla mplampla mpla mplampla mpla mpla ",
+        "category": "culture",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/5/56/Kazantzakisgrave.jpg",
+        "url": "",
+        "points": 10,
+        "lat": 35.33303,
+        "lng": 25.130668
+    },
+
+    {
+        "name": { "en": "Mare", "gr": "Μάρε" },
+        "description": "mpla mpla mpla mpla mpla mplampla mpla mplampla mpla mplampla mpla mpla ",
+        "category": "entertainment",
+        "photo": "http://www.mare-cafe.gr/assets/img/gallery/Mare_coffee_bar_&_food_fountain.jpg",
+        "url": "",
+        "points": 10,
+        "lat": 35.341913,
+        "lng": 25.130389
+    }
+
+
+]
