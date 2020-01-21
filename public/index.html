@@ -65,7 +65,7 @@ limitations under the License
 
     <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">-->
-    <link rel="stylesheet" href="easy-button-kgr.css">
+    <link rel="stylesheet" href="styles/easy-button-kgr.css">
     <link rel="stylesheet" href="styles/stations.css">
     <!-- we need to tell the mobile browser to disable unwanted scaling of the page and set it to its actual size by placing the following line in the head section or our HTML page:-->
 
@@ -151,22 +151,20 @@ limitations under the License
           <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
         </nav>
       </div>
-      <main class="mdl-layout__content mdl-color--grey-100">
+     
+ <main class="mdl-layout__content mdl-color--grey-100">
         <div class="mdl-grid demo-content">
-           
-    <div id="demo-snackbar-example" class="mdl-js-snackbar mdl-snackbar">
+          <div class="mdl-layout mdl-js-layout">
+        <div id ='map'></div>
+          </div>
+        </div>
+        <div id="demo-snackbar-example" class="mdl-js-snackbar mdl-snackbar">
   <div class="mdl-snackbar__text"></div>
   <button class="mdl-snackbar__action" type="button"></button>
 </div>
-
-<!-- <div id="map" style="width: 600px; height: 400px;"></div>-->
-    <div id='map'></div> 
-
-
-
-
-        </div>
       </main>
+
+
     </div>
     <!-- Import and configure the Firebase SDK -->
     <!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->
