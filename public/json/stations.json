@@ -2,61 +2,71 @@
         "streetName": { "en": "filellinon", "gr": "Φιλελλήνων" },
         "lat": 35.324273,
         "lng": 25.14064,
-        "bikesAvailable": 8
+        "bikesAvailable": 8,
+        "stationID": 1
     },
     {
         "streetName": { "en": "liontaria", "gr": "Λιοντάρια" },
         "lat": 35.339109,
         "lng": 25.13328,
-        "bikesAvailable": 3
+        "bikesAvailable": 1,
+        "stationID": 2
     },
     {
         "streetName": { "en": "chanioporta", "gr": "Χανιόπορτα" },
         "lat": 35.336685,
         "lng": 25.123672,
-        "bikesAvailable": 5
+        "bikesAvailable": 5,
+        "stationID": 3
     },
 
     {
         "streetName": { "en": "port", "gr": "Λιμάνι" },
         "lat": 35.341844,
         "lng": 25.1452,
-        "bikesAvailable": 2
+        "bikesAvailable": 2,
+        "stationID": 4
     },
     {
         "streetName": { "en": "koules", "gr": "Κούλες" },
         "lat": 35.342942,
         "lng": 25.134503,
-        "bikesAvailable": 10
+        "bikesAvailable": 10,
+        "stationID": 5
     },
     {
         "streetName": { "en": "karavolas", "gr": "Καράβολας" },
         "lat": 35.340676,
         "lng": 25.117734,
-        "bikesAvailable": 9
+        "bikesAvailable": 9,
+        "stationID": 6
     },
     {
         "streetName": { "en": "airport", "gr": "Αεροδρόμιο" },
         "lat": 35.336584,
         "lng": 25.172457,
-        "bikesAvailable": 20
+        "bikesAvailable": 20,
+        "stationID": 7
     },
     {
         "streetName": { "en": "national garden", "gr": "Εθνικός Κήπος" },
         "lat": 37.972037,
         "lng": 23.737142,
-        "bikesAvailable": 25
+        "bikesAvailable": 25,
+        "stationID": 8
     },
     {
         "streetName": { "en": "omonia square", "gr": "Ομόνοια" },
         "lat": 37.984448,
         "lng": 23.728098,
-        "bikesAvailable": 25
+        "bikesAvailable": 25,
+        "stationID": 9
     },
     {
         "streetName": { "en": "monastiraki square", "gr": "Μοναστηράκι" },
         "lat": 37.976236,
         "lng": 23.726118,
-        "bikesAvailable": 25
+        "bikesAvailable": 25,
+        "stationID": 10
     }
 ]
