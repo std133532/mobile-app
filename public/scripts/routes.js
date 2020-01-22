@@ -65,7 +65,7 @@ var pointsOfInterest;
 var scooters;
 
 
-const fSt = fetch('../json/stations.json').then(function(kostas) {
+/*const fSt = fetch('../json/stations.json').then(function(kostas) {
     return kostas.json();
 }).then(function(json) {
     stations = json;
@@ -73,7 +73,7 @@ const fSt = fetch('../json/stations.json').then(function(kostas) {
 }).catch(function(err) {
     console.log('Fetch problem: ' + err.message);
 });
-
+*/
 const fpo = fetch('../json/pointsofInterest.json').then(function(pointsInterest) {
     return pointsInterest.json();
 }).then(function(json) {
@@ -95,7 +95,7 @@ const fsc = fetch('../json/scooters.json').then(function(scoots) {
 //https://stackoverflow.com/questions/52151006/react-fetch-multiple-get-requests
 
 
-const promises = [fSt, fpo, fsc];
+const promises = [ fpo, fsc];
 
 Promise.allSettled(promises).
 then((results) => results.forEach((result) => console.log(result.status))).
@@ -284,7 +284,7 @@ function initialize() {
 
         var eScooterIcon = new LeafIcon({ iconUrl: '../images/scooters.PNG' });
 
-        for (var i = 0; i < stations.length; i++) {
+       /* for (var i = 0; i < stations.length; i++) {
             var stationMarker = {
                 "marker": L.marker([stations[i].lat, stations[i].lng], {
                     icon: eScooterIcon,
@@ -300,7 +300,39 @@ function initialize() {
 
             stationMarkers[stations[i].stationID] = stationMarker;
 
-        }
+        } */
+
+//Get the stations from firebase
+        firebase.firestore().collection("stations")
+            .get()
+            .then(function(querySnapshot) {
+                querySnapshot.forEach(function(doc) {
+                    // doc.data() is never undefined for query doc snapshots
+                    console.log(doc.id, " => ", doc.data());
+
+                       var station= doc.data();
+                     
+                               var stationMarker = {
+                        "marker": L.marker([station.latlon._lat, station.latlon._long], {
+                            icon: eScooterIcon,
+                            zIndexOffset: 1000,
+                            opacity: 0.7
+                        }),
+
+                        "isOnMap": false
+                    };
+                    stationMarker.marker.bindPopup("Σταθμός " + station.streetName);
+                    if (stationMarker.marker.addTo(myMap))
+                        stationMarker.isOnMap = true;
+
+                    stationMarkers[station.stationID] = stationMarker;
+
+                        });
+            })
+            .catch(function(error) {
+                console.log("Error getting documents: ", error);
+            });
+
     }
 
     function showRoute() {
