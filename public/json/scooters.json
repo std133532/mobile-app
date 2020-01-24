@@ -3,127 +3,182 @@
         "battery": 75,
         "distance": 7,
         "status": "vacant",
-        "stationID": 1
+        "stationID": 1,
+        "lat": 35.324229,
+        "lng": 25.140608
     },
     {
         "id": 2,
         "battery": 60,
         "distance": 6,
         "status": "rented",
-        "stationID": 1
+        "stationID": 1,
+        "lat": 35.324164,
+        "lng": 25.140597
     },
     {
         "id": 3,
         "battery": 75,
         "distance": 7,
         "status": "rented",
-        "stationID": 1
+        "stationID": 1,
+        "lat": 35.324299,
+        "lng": 25.140635
     },
     {
         "id": 4,
         "battery": 70,
         "distance": 7,
         "status": "outOfOrder",
-        "stationID": 1
+        "stationID": 1,
+        "lat": 35.324212,
+        "lng": 25.140715
     },
     {
         "id": 5,
         "battery": 100,
         "distance": 10,
         "status": "rented",
-        "stationID": 1
+        "stationID": 1,
+        "lat": 35.324138,
+        "lng": 25.140742
     },
     {
         "id": 6,
         "battery": 80,
         "distance": 8,
         "status": "rented",
-        "stationID": 1
+        "stationID": 1,
+        "lat": 35.324422,
+        "lng": 25.140656
     },
     {
         "id": 7,
         "battery": 100,
         "distance": 10,
         "status": "rented",
-        "stationID": 1
+        "stationID": 1,
+        "lat": 35.324059,
+        "lng": 25.140812
     },
     {
         "id": 9,
         "battery": 74,
         "distance": 7,
         "status": "rented",
-        "stationID": 1
+        "stationID": 1,
+        "lat": 35.324138,
+        "lng": 25.140404
     },
     {
         "id": 10,
         "battery": 100,
         "distance": 10,
         "status": "vacant",
-        "stationID": 2
+        "stationID": 2,
+        "lat": 35.339017,
+        "lng": 25.133194
     },
     {
         "id": 11,
         "battery": 74,
         "distance": 7,
         "status": "rented",
-        "stationID": 2
+        "stationID": 2,
+        "lat": 35.339223,
+        "lng": 25.133328
     },
     {
         "id": 12,
         "battery": 64,
         "distance": 7,
         "status": "rented",
-        "stationID": 2
+        "stationID": 2,
+        "lat": 35.339179,
+        "lng": 25.132953
     },
     {
         "id": 13,
         "battery": 71,
         "distance": 7,
         "status": "vacant",
-        "stationID": 3
-    }, {
+        "stationID": 3,
+        "lat": 35.336685,
+        "lng": 25.123672
+    },
+    {
         "id": 14,
         "battery": 71,
         "distance": 7,
         "status": "vacant",
-        "stationID": 3
+        "stationID": 3,
+        "lat": 35.336685,
+        "lng": 25.123672
     },
     {
         "id": 15,
         "battery": 71,
         "distance": 7,
         "status": "vacant",
-        "stationID": 3
+        "stationID": 3,
+        "lat": 35.336685,
+        "lng": 25.123672
     },
     {
         "id": 16,
         "battery": 71,
         "distance": 7,
         "status": "vacant",
-        "stationID": 3
+        "stationID": 3,
+        "lat": 35.336685,
+        "lng": 25.123672
     },
     {
         "id": 17,
         "battery": 71,
         "distance": 7,
         "status": "vacant",
-        "stationID": 3
+        "stationID": 3,
+        "lat": 35.336685,
+        "lng": 25.123672
     },
     {
         "id": 18,
         "battery": 50,
         "distance": 5,
         "status": "vacant",
-        "stationID": 4
+        "stationID": 4,
+        "lat": 35.341844,
+        "lng": 25.1452
     },
     {
         "id": 19,
         "battery": 100,
         "distance": 10,
         "status": "vacant",
-        "stationID": 4
+        "stationID": 4,
+        "lat": 35.341844,
+        "lng": 25.1452
+    } ,
+     {
+        "id": 20,
+        "battery": 100,
+        "distance": 10,
+        "status": "vacant",
+        "stationID": 10,
+        "lat": 37.974944, 
+        "lng": 23.725035
+    },
+
+       {
+        "id": 21,
+        "battery": 100,
+        "distance": 10,
+        "status": "vacant",
+        "stationID": 10,
+        "lat": 37.974961, 
+        "lng": 23.726869
+
     }
-
-
 
 ]

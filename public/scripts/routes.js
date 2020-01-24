@@ -41,6 +41,15 @@
     1. Εμφανίζονται στο χάρτη τα κοντινότερα σημεία ενδιαφέροντος που απέχουν maxDistance απο τον κοντινότερο σταθμό ως προς τον χρήστη
     2. Οταν ο χρήστης βρίσκεται πολύ κοντά στο σταθμό προορισμού (50m), το εικονίδιο του σταθμού εξαφανίζεται (ToDo: στη θέση του θα εμφανιστουν τα πατίνια )
         ενώ όταν απομακρυνθεί σε απόσταση μεγαλύτερη των 50m τότε το εικονίδιο του σταθμού εμφανίζεται και αποκρύπτονται τα πατίνια. 
+
+    ver: 1.8
+    Perigrafi: 
+    ------------
+    1. Εμφανίζονται τα πατίνια όταν ο χρήστης πλησιάσει (50μ). Εξαφανίζονται όταν απομακρυνθεί. 
+    2. Με κλίκ στο πατίνι εμφανίζεται ένα popup το οποίο περιέχει ενα κουμπί για ενοικίαση πατινιού 
+    3. Πατώντας το κουμπί ενοικίασης το σύστημα μπορεί να πληροφορηθεί το ID πατινιού και να γινει η ενοικίαση. 
+    4. Στην παρούσσα φάση εμφανίζεται alert μηνυματος που περιέχει το ID πατινιού που ενοικιάστηκε. 
+    5. Εγινε αυξηση του μεγέθους και η αλλαγή χρώματος του κουμπιου Χ που κλείνει το παράθυρο popup, ώστε να ειναι ευκολη η διαδραση απο κινητη συσκευή. 
 */
 
 /* 
@@ -63,9 +72,10 @@
 var stations;
 var pointsOfInterest;
 var scooters;
+var np;
 
 
-/*const fSt = fetch('../json/stations.json').then(function(kostas) {
+const fSt = fetch('../json/stations.json').then(function(kostas) {
     return kostas.json();
 }).then(function(json) {
     stations = json;
@@ -73,7 +83,7 @@ var scooters;
 }).catch(function(err) {
     console.log('Fetch problem: ' + err.message);
 });
-*/
+
 const fpo = fetch('../json/pointsofInterest.json').then(function(pointsInterest) {
     return pointsInterest.json();
 }).then(function(json) {
@@ -95,7 +105,7 @@ const fsc = fetch('../json/scooters.json').then(function(scoots) {
 //https://stackoverflow.com/questions/52151006/react-fetch-multiple-get-requests
 
 
-const promises = [ fpo, fsc];
+const promises = [fSt, fpo, fsc];
 
 Promise.allSettled(promises).
 then((results) => results.forEach((result) => console.log(result.status))).
@@ -119,6 +129,7 @@ var hideRouteInstructions = true;
 var nearestPoints;
 var poiOnMap = [];
 var stationMarkers = {};
+var scooterMarkers = {};
 
 function initialize() {
     var myMap = L.map('map').setView([35.32681169624291, 25.138424634933475], 13);
@@ -147,7 +158,7 @@ function initialize() {
             },
             title: 'Πινέζα στη Θέση μου',
             //icon: '<span class="star">&curren;</span>'
-            icon: '<span class="star"><img src="../images/routeInstructions.png" alt="Trulli" width="30" height="45"></span>'
+            icon: '<span class="star"><img src="images/routeInstructions.png" alt="Trulli" width="30" height="45"></span>'
         }]
     }).addTo(myMap);
 
@@ -186,11 +197,11 @@ function initialize() {
     }
     //////////////////////////////////Αυτόματη Ανανέωση θέσης χρήστη //////////////////////////////////////////
 
-    //myMap.locate({ setView: true, watch: true, enableHighAccuracy: true, maximumAge: 1000 });
-    //myMap.on('locationfound', onMapClick);
+    myMap.locate({ setView: true, watch: true, enableHighAccuracy: true, maximumAge: 1000 });
+    myMap.on('locationfound', onMapClick);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function onMapClick(e) {
-        var np = [];
+        np = []; //clear all points of interest
         /*
             popup
                 .setLatLng(e.latlng)
@@ -282,9 +293,9 @@ function initialize() {
             }
         });
 
-        var eScooterIcon = new LeafIcon({ iconUrl: '../images/scooters.PNG' });
+        var eScooterIcon = new LeafIcon({ iconUrl: 'images/scooters.PNG' });
 
-       /* for (var i = 0; i < stations.length; i++) {
+        for (var i = 0; i < stations.length; i++) {
             var stationMarker = {
                 "marker": L.marker([stations[i].lat, stations[i].lng], {
                     icon: eScooterIcon,
@@ -300,44 +311,12 @@ function initialize() {
 
             stationMarkers[stations[i].stationID] = stationMarker;
 
-        } */
-
-//Get the stations from firebase
-        firebase.firestore().collection("stations")
-            .get()
-            .then(function(querySnapshot) {
-                querySnapshot.forEach(function(doc) {
-                    // doc.data() is never undefined for query doc snapshots
-                    console.log(doc.id, " => ", doc.data());
-
-                       var station= doc.data();
-                     
-                               var stationMarker = {
-                        "marker": L.marker([station.latlon._lat, station.latlon._long], {
-                            icon: eScooterIcon,
-                            zIndexOffset: 1000,
-                            opacity: 0.7
-                        }),
-
-                        "isOnMap": false
-                    };
-                    stationMarker.marker.bindPopup("Σταθμός " + station.streetName);
-                    if (stationMarker.marker.addTo(myMap))
-                        stationMarker.isOnMap = true;
-
-                    stationMarkers[station.stationID] = stationMarker;
-
-                        });
-            })
-            .catch(function(error) {
-                console.log("Error getting documents: ", error);
-            });
-
+        }
     }
 
     function showRoute() {
         if (routingControl) {
-            //Εκαθάριση διαδρομών χάρτη 
+            //Εκαθάριση διαδρομών απο το χάρτη 
             for (var i = 0; i < routeHistory.length; i++) {
                 routeHistory[i].remove(myMap);
             }
@@ -477,7 +456,7 @@ function initialize() {
         });
 
         console.log("-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- - ");
-        // Empry Map POIs First 
+        // Empty Map POIs First 
         for (var i = 0; i < poiOnMap.length; i++) {
             poiOnMap[i].remove(myMap);
         }
@@ -493,9 +472,15 @@ function initialize() {
             }
         });
 
-        var poiIcon = new LeafIcon({ iconUrl: '../images/icons8-greek-pillar-capital-128.png' });
+
 
         for (var i = 0; i < npoints.length; i++) {
+            if (npoints[i].category === "culture")
+                var poiIcon = new LeafIcon({ iconUrl: 'images/icons8-greek-pillar-capital-128.png' });
+            else if (npoints[i].category === "entertainment") {
+                var poiIcon = new LeafIcon({ iconUrl: 'images/icons8-food-100.png' });
+            }
+
             var poi = L.marker([npoints[i].lat, npoints[i].lng], {
                     icon: poiIcon,
                     zIndexOffset: 1000,
@@ -507,7 +492,7 @@ function initialize() {
     }
 
     function displayScooters(nearestStation, currentPosition) {
-
+        //Αφαίρεση εικονιδίου σταθμού απο το χάρτη
         var distance = L.latLng([nearestStation.lat, nearestStation.lng]).distanceTo([currentPosition.lat, currentPosition.lng]);
 
         if (distance < 50) {
@@ -520,6 +505,79 @@ function initialize() {
 
         //ToDo 
         //Εδώ θα εμφανίζονται τα σκουτερ
+
+        //cls 
+        for (const [key, value] of Object.entries(scooterMarkers)) {
+            console.log("scooterMarkers -->", key, value);
+            if (scooterMarkers[key].isOnMap)
+                scooterMarkers[key].marker.remove(myMap);
+        }
+
+        var LeafIcon = L.Icon.extend({
+            options: {
+                iconSize: [60, 60],
+                //shadowSize: [50, 64],
+                iconAnchor: [30, 60],
+                // shadowAnchor: [4, 62],
+                // popupAnchor: [-3, -76]
+            }
+        });
+
+
+        var scooterIcon = new LeafIcon({ iconUrl: 'images/icons8-kick-scooter-emoji-48.png' });
+
+        for (var i = 0; i < scooters.length; i++) {
+            var scooterMarker = {
+                "marker": L.marker([scooters[i].lat, scooters[i].lng], {
+                    icon: scooterIcon,
+                    zIndexOffset: 1000 + i,
+                    opacity: 1
+                }),
+
+                "isOnMap": false
+            };
+            var html = getScooterMarkerPopUpHTMLContent(scooters[i].id);
+
+            //scooterMarker.marker.bindPopup("scooterID: " + scooters[i].id);
+            scooterMarker.marker.bindPopup(html);
+
+            if (distance < 50 && scooters[i].stationID === nearestStation.stationID) {
+                scooterMarker.isOnMap = true;
+                 alert("to vrika")
+                scooterMarker.marker.addTo(myMap);
+            }
+
+            scooterMarkers[scooters[i].id] = scooterMarker;
+
+            //Δεν δουλεύει έτσι:  
+            //document.getElementById("sc" + scooters[i].id).addEventListener('click', function() {
+            //    alert(this.getAttribute("id"));
+            //});
+
+        }
     }
 
+    function getScooterMarkerPopUpHTMLContent(scooterID) {
+        var html = new Array;
+        html.push('<button onclick="scooterButtonClick(this)" class="scooters" id = "sc' + scooterID + '">');
+        html.push('Ενοικίασέ με!');
+        html.push('</button>');
+
+        return html.join('');
+    }
+
+
+    // popUpCloseButtonEnlargement();
+}
+
+/* function popUpCloseButtonEnlargement() {
+    var elements = document.getElementsByClassName("leaflet-popup-close-button");
+    //.style.color = "blue";
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].style.color = "blue";
+    }
+} */
+
+function scooterButtonClick(buttonElement) {
+    alert("Το πατίνι " + buttonElement.getAttribute("id") + " ενοικιάστηκε");
 }
