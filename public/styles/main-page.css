@@ -237,3 +237,19 @@ _:-ms-input-placeholder, :root .demo-graph {
     width: 100%;
     padding-top: 13px;
      }
+
+     .demo-card-square.mdl-card {
+  width: 244px;
+  height: 380px;
+}
+
+.demo-card-square > .mdl-card__title {
+  color: #fff;
+   bottom right 15%  no-repeat #46B6AC;  
+
+}
+
+.poi-ctg{
+
+  margin: 2px 19px;
+}

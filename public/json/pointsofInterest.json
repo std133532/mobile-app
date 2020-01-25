@@ -1,4 +1,5 @@
 [{
+        "id": 1,
         "name": { "en": "Liontaria", "gr": "Λιοντάρια" },
         "description": "mpla mpla mpla mpla mpla mplampla mpla mplampla mpla mplampla mpla mpla ",
         "category": "culture",
@@ -10,10 +11,11 @@
     },
 
     {
+         "id": 2,
         "name": { "en": "Logia", "gr": "Λότζια" },
-        "description": "mpla mpla mpla mpla mpla mplampla mpla mplampla mpla mplampla mpla mpla ",
+        "description": "Λότζια (Loggia) ονομάζεται το κτίριο που σήμερα στεγάζεται το δημαρχείο του δήμου Ηρακλείου. Την εποχή της Ενετοκρατίας, το κτήριο ήταν χώρος συγκέντρωσης ευγενών και αρχόντων.",
         "category": "culture",
-        "photo": "https://upload.wikimedia.org/wikipedia/commons/4/47/Kreta_-_Iraklion_-_Venezianische_Loggia.jpg",
+        "photo": "../images/Kreta_-_Iraklion_-_Venezianische_Loggia.png",
         "url": "",
         "points": 9,
         "lat": 35.339795,
@@ -21,6 +23,7 @@
     },
 
     {
+         "id": 3,
         "name": { "en": "Knosos", "gr": "Κνωσός" },
         "description": "mpla mpla mpla mpla mpla mplampla mpla mplampla mpla mplampla mpla mpla ",
         "category": "culture",
@@ -32,10 +35,11 @@
     },
 
     {
+         "id": 4,
         "name": { "en": "Kazantzakis Grave", "gr": "Τάφος Καζαντζάκη" },
-        "description": "mpla mpla mpla mpla mpla mplampla mpla mplampla mpla mplampla mpla mpla ",
+        "description": "Ο τάφος του μεγάλου κρητικού συγγραφέα βρίσκεται στον προμαχώνα Μαρτινέγκο των ενετικών τειχών του Ηρακλείου.",
         "category": "culture",
-        "photo": "https://upload.wikimedia.org/wikipedia/commons/5/56/Kazantzakisgrave.jpg",
+        "photo": "../images/rsz_kazantzakisgrave.png",
         "url": "",
         "points": 10,
         "lat": 35.33303,
@@ -43,10 +47,11 @@
     },
 
     {
+         "id": 5,
         "name": { "en": "Mare", "gr": "Μάρε" },
-        "description": "mpla mpla mpla mpla mpla mplampla mpla mplampla mpla mplampla mpla mpla ",
+        "description": "Στεγάζει το συγκρότημα κινηματογράφων ODEON, καφετερίες, εστιατόρια (και γενικά καταστήματα εστίασης) καθώς και εμπορικά. ",
         "category": "entertainment",
-        "photo": "http://www.mare-cafe.gr/assets/img/gallery/Mare_coffee_bar_&_food_fountain.jpg",
+        "photo": "../images/rsz_mare_coffee_bar_&_food_fountain.jpg",
         "url": "",
         "points": 10,
         "lat": 35.341913,

@@ -484,10 +484,14 @@ function initialize() {
             var poi = L.marker([npoints[i].lat, npoints[i].lng], {
                     icon: poiIcon,
                     zIndexOffset: 1000,
-                    opacity: 0.7
+                    opacity: 0.7,
+                    properties: { id: + npoints[i].id }
                 }).bindPopup(npoints[i].category + " " + npoints[i].name.gr)
                 .addTo(myMap);
             poiOnMap.push(poi);
+
+            poi.addEventListener('click', showPOIDetails); 
+
         }
     }
 
@@ -565,7 +569,7 @@ function showEscooterDetails(e){
 
  var marker = e.target;
  esccoterid=marker.options.properties.id;
-    var dialog = document.querySelector('dialog');
+    var dialog = document.querySelector('#dialog-scooter');
 
 var paragraph = document.getElementById("dialog-text");
 paragraph.innerHTML =("Το χαρακτηριστικά του πατινιού είναι " );
@@ -583,6 +587,37 @@ $("ol").append("<li>Υπολοιπόμενα χιλιόμετρα:<b> " +scooter
       dialog.close();
       });
 }
+
+function showPOIDetails(e){
+
+var poi;
+ var marker = e.target;
+ poi_id=marker.options.properties.id;
+
+ for (var i = 0; i < np.length; i++) {
+        if(np[i].id==poi_id){
+            poi =np[i]
+            break;
+        }
+
+
+ }
+
+    var dialog = document.querySelector('#dialog-poi');
+$(".mdl-card__title ").css('background-image', 'url(' + poi.photo + ')');
+$(".poi-name").text(poi.name.gr);
+$(".poi-description").text(poi.description);
+$(".poi-ctg-name").text(poi.category);
+
+dialog.showModal();
+
+      dialog.querySelector('.close-poi').addEventListener('click', function() {
+      dialog.close();
+      });
+
+}
+
+
     function getScooterMarkerPopUpHTMLContent(scooterID) {
        var html = new Array;
         html.push('<button onclick="scooterButtonClick(this)" class="scooters" id = "sc' + scooterID + '">');
