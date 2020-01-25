@@ -144,6 +144,11 @@ function initialize() {
 
     addStationsOnMap();
 
+
+var nearestpoi = document.getElementById("nearestpoi");
+nearestpoi.addEventListener('click', showDestinations);
+
+
     var setPinOnCurrentPositionButton = L.easyButton({
         id: 'id-for-the-button', // an id for the generated button
         position: 'topleft', // inherited from L.Control -- the corner it goes in
@@ -608,6 +613,15 @@ $(".mdl-card__title ").css('background-image', 'url(' + poi.photo + ')');
 $(".poi-name").text(poi.name.gr);
 $(".poi-description").text(poi.description);
 $(".poi-ctg-name").text(poi.category);
+var src;
+if(poi.category=='culture') src= '../images/icons8-greek-pillar-capital-128.png';
+    else src='../images/icons8-food-100.png';
+$(".poi-catg-photo").attr("src", src);
+
+var el = document.querySelector('.poi-badges');
+el.setAttribute('data-badge',poi.points);
+//$('.poi-badges').data('badge',poi.points); //setter
+
 
 dialog.showModal();
 
@@ -644,4 +658,14 @@ dialog.showModal();
 
 function scooterButtonClick(buttonElement) {
     alert("Το πατίνι " + buttonElement.getAttribute("id") + " ενοικιάστηκε");
+}
+
+
+
+
+
+ function showDestinations(e) {
+
+
+    //alert("HERE");
 }
