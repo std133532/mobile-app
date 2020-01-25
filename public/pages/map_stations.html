@@ -10,8 +10,10 @@
 
     <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
 
+    <!-- <link rel="stylesheet" href="leaflet.css"> -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
+    <!-- <script src="leaflet.js"></script> -->
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
     <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
@@ -19,12 +21,30 @@
     <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">-->
     <link rel="stylesheet" href="../styles/easy-button-kgr.css">
-    <link rel="stylesheet" href="../styles/toremovestations_css.css">
+
+    <link rel="stylesheet" href="../styles/page.css">
     <!-- we need to tell the mobile browser to disable unwanted scaling of the page and set it to its actual size by placing the following line in the head section or our HTML page:-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <style>
         .leaflet-control-container .leaflet-routing-container-hide {
             display: none;
+        }
+        
+        .leaflet-container a.leaflet-popup-close-button {
+            /* Αυξηση μεγέθους και αλλαγή χρώματος κουμπιού Χ για τα παράθυρα popup*/
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 0px 0px 0 0;
+            border: none;
+            text-align: center;
+            width: 30px;
+            height: 0px;
+            font: 30px/14px Tahoma, Verdana, sans-serif;
+            color: #ec080878;
+            text-decoration: none;
+            font-weight: bold;
+            background: transparent;
         }
     </style>
 </head>

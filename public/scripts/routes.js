@@ -158,7 +158,7 @@ function initialize() {
             },
             title: 'Πινέζα στη Θέση μου',
             //icon: '<span class="star">&curren;</span>'
-            icon: '<span class="star"><img src="images/routeInstructions.png" alt="Trulli" width="30" height="45"></span>'
+            icon: '<span class="star"><img src="../images/routeInstructions.png" alt="Trulli" width="30" height="45"></span>'
         }]
     }).addTo(myMap);
 
@@ -180,7 +180,7 @@ function initialize() {
     }
 */
     //add location noto found listener
-    myMap.on('locationerror', onLocationError);
+ //   myMap.on('locationerror', onLocationError);
 
     function onLocationError(e) {
         alert(e.message);
@@ -197,8 +197,8 @@ function initialize() {
     }
     //////////////////////////////////Αυτόματη Ανανέωση θέσης χρήστη //////////////////////////////////////////
 
-    myMap.locate({ setView: true, watch: true, enableHighAccuracy: true, maximumAge: 1000 });
-    myMap.on('locationfound', onMapClick);
+ //  myMap.locate({ setView: true, watch: true, enableHighAccuracy: true, maximumAge: 1000 });
+ //   myMap.on('locationfound', onMapClick);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function onMapClick(e) {
         np = []; //clear all points of interest
@@ -213,7 +213,7 @@ function initialize() {
 
         //Εμφάνιση διαδρομής στο χάρτη.
 
-        findRoutes(e.latlng, getNearestStation(e.latlng));
+        //findRoutes(e.latlng, getNearestStation(e.latlng));
         np = getNearestPointsOfInterest(getNearestStation(e.latlng));
         displayNearestPoints(np);
         displayScooters(getNearestStation(e.latlng), e.latlng);
@@ -293,7 +293,7 @@ function initialize() {
             }
         });
 
-        var eScooterIcon = new LeafIcon({ iconUrl: 'images/scooters.PNG' });
+        var eScooterIcon = new LeafIcon({ iconUrl: '../images/scooters.PNG' });
 
         for (var i = 0; i < stations.length; i++) {
             var stationMarker = {
@@ -476,9 +476,9 @@ function initialize() {
 
         for (var i = 0; i < npoints.length; i++) {
             if (npoints[i].category === "culture")
-                var poiIcon = new LeafIcon({ iconUrl: 'images/icons8-greek-pillar-capital-128.png' });
+                var poiIcon = new LeafIcon({ iconUrl: '../images/icons8-greek-pillar-capital-128.png' });
             else if (npoints[i].category === "entertainment") {
-                var poiIcon = new LeafIcon({ iconUrl: 'images/icons8-food-100.png' });
+                var poiIcon = new LeafIcon({ iconUrl: '../images/icons8-food-100.png' });
             }
 
             var poi = L.marker([npoints[i].lat, npoints[i].lng], {
@@ -524,28 +524,30 @@ function initialize() {
         });
 
 
-        var scooterIcon = new LeafIcon({ iconUrl: 'images/icons8-kick-scooter-emoji-48.png' });
+        var scooterIcon = new LeafIcon({ iconUrl: '../images/icons8-kick-scooter-emoji-48.png' });
 
         for (var i = 0; i < scooters.length; i++) {
             var scooterMarker = {
                 "marker": L.marker([scooters[i].lat, scooters[i].lng], {
                     icon: scooterIcon,
                     zIndexOffset: 1000 + i,
-                    opacity: 1
+                    opacity: 1,
+                    properties: { id: + scooters[i].id }
+                   
                 }),
 
                 "isOnMap": false
             };
             var html = getScooterMarkerPopUpHTMLContent(scooters[i].id);
-
+scooterMarker.marker.addEventListener('click', showEscooterDetails); 
             //scooterMarker.marker.bindPopup("scooterID: " + scooters[i].id);
-            scooterMarker.marker.bindPopup(html);
-
-            if (distance < 50 && scooters[i].stationID === nearestStation.stationID) {
+        //    scooterMarker.marker.bindPopup('<dialog class="mdl-dialog"> <h4 class="mdl-dialog__title">Allow data collection?</h4><div class="mdl-dialog__content"><p> Allowing us to collect data will let us get you the information you want faster.</p></div></dialog>');
+//marker.bindPopup(popupContent).openPopup();
+          //  if (distance < 50 && scooters[i].stationID === nearestStation.stationID) {
                 scooterMarker.isOnMap = true;
-                 alert("to vrika")
+              //   alert("to vrika")
                 scooterMarker.marker.addTo(myMap);
-            }
+          // }
 
             scooterMarkers[scooters[i].id] = scooterMarker;
 
@@ -557,13 +559,40 @@ function initialize() {
         }
     }
 
+function showEscooterDetails(e){
+
+      $('ol').empty()
+
+ var marker = e.target;
+ esccoterid=marker.options.properties.id;
+    var dialog = document.querySelector('dialog');
+
+var paragraph = document.getElementById("dialog-text");
+paragraph.innerHTML =("Το χαρακτηριστικά του πατινιού είναι " );
+//paragraph.append (" Επίπεδο μπαταρίας: " +scooters[esccoterid].battery );
+
+$("ol").append("<li>Κωδικός Πατινιού: <b>sc" +scooters[esccoterid].id+"</b> </li>");
+
+$("ol").append("<li>Επίπεδο μπαταρίας:<b> " +scooters[esccoterid].battery+"%</b> </li>");
+
+$("ol").append("<li>Υπολοιπόμενα χιλιόμετρα:<b> " +scooters[esccoterid].distance+"</b> </li>");
+
+      dialog.showModal();
+
+      dialog.querySelector('.close').addEventListener('click', function() {
+      dialog.close();
+      });
+}
     function getScooterMarkerPopUpHTMLContent(scooterID) {
-        var html = new Array;
+       var html = new Array;
         html.push('<button onclick="scooterButtonClick(this)" class="scooters" id = "sc' + scooterID + '">');
         html.push('Ενοικίασέ με!');
         html.push('</button>');
 
-        return html.join('');
+        return html.join(''); 
+
+
+
     }
 
 
