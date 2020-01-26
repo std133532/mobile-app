@@ -50,6 +50,11 @@
     3. Πατώντας το κουμπί ενοικίασης το σύστημα μπορεί να πληροφορηθεί το ID πατινιού και να γινει η ενοικίαση. 
     4. Στην παρούσσα φάση εμφανίζεται alert μηνυματος που περιέχει το ID πατινιού που ενοικιάστηκε. 
     5. Εγινε αυξηση του μεγέθους και η αλλαγή χρώματος του κουμπιου Χ που κλείνει το παράθυρο popup, ώστε να ειναι ευκολη η διαδραση απο κινητη συσκευή. 
+ 
+    ver: 1.9
+    Perigrafi: 
+    ------------
+
 */
 
 /* 
@@ -446,8 +451,7 @@ function initialize() {
 
     }
 
-    function getNearestPointsOfInterest(chosenStation) {
-
+   function getNearestPointsOfInterest(chosenStation) {
         var list = [];
         var poi = pointsOfInterest;
 
@@ -456,12 +460,11 @@ function initialize() {
                 .distanceTo([poi[i].lat, poi[i].lng]);
 
             if (distance < maxDistance) {
-
+                //προσθέτουμε την απόσταση απο το σταθμό πατινιών που βρίσκεται ο χρήστης στο αντικείμενο poi[i]  
+                poi[i].distanceFromStation = distance;
                 list.push(poi[i]);
-
-            
-
             }
+
 
 
         }
