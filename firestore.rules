@@ -65,5 +65,12 @@ service cloud.firestore {
                       && request.resource.data.imageUrl.matches('https?://.*'));
       allow delete: if false;
     }
+     match /destinations/{destination} {
+      allow read;
+      allow write ;
+       allow create: if request.auth.uid != null;
+      allow  update;
+      allow delete: if false;
+    }
   }
 }

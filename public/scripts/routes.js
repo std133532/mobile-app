@@ -73,6 +73,7 @@ var stations;
 var pointsOfInterest;
 var scooters;
 var np;
+var  db = firebase.firestore();
 
 
 const fSt = fetch('../json/stations.json').then(function(kostas) {
@@ -145,8 +146,8 @@ function initialize() {
     addStationsOnMap();
 
 
-var nearestpoi = document.getElementById("nearestpoi");
-nearestpoi.addEventListener('click', showDestinations);
+    var nearestpoi = document.getElementById("nearestpoi");
+    nearestpoi.addEventListener('click', showDestinations);
 
 
     var setPinOnCurrentPositionButton = L.easyButton({
@@ -185,7 +186,7 @@ nearestpoi.addEventListener('click', showDestinations);
     }
 */
     //add location noto found listener
- //   myMap.on('locationerror', onLocationError);
+    //   myMap.on('locationerror', onLocationError);
 
     function onLocationError(e) {
         alert(e.message);
@@ -202,8 +203,8 @@ nearestpoi.addEventListener('click', showDestinations);
     }
     //////////////////////////////////Αυτόματη Ανανέωση θέσης χρήστη //////////////////////////////////////////
 
- //  myMap.locate({ setView: true, watch: true, enableHighAccuracy: true, maximumAge: 1000 });
- //   myMap.on('locationfound', onMapClick);
+    //  myMap.locate({ setView: true, watch: true, enableHighAccuracy: true, maximumAge: 1000 });
+    //   myMap.on('locationfound', onMapClick);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     function onMapClick(e) {
         np = []; //clear all points of interest
@@ -220,6 +221,9 @@ nearestpoi.addEventListener('click', showDestinations);
 
         //findRoutes(e.latlng, getNearestStation(e.latlng));
         np = getNearestPointsOfInterest(getNearestStation(e.latlng));
+   /* Set the current poi in destinations of the current user */
+        var uid = firebase.auth().currentUser.uid;
+        setNearestPointsInFB(np, uid);
         displayNearestPoints(np);
         displayScooters(getNearestStation(e.latlng), e.latlng);
         showRoute();
@@ -248,7 +252,10 @@ nearestpoi.addEventListener('click', showDestinations);
         //alert( 'Alert Generale !!!')
         //el = element;
         //console.log (el);
-        myMap.locate({ setView: true, maxZoom: 16 });
+        myMap.locate({
+            setView: true,
+            maxZoom: 16
+        });
 
         //Εκαθάριση διαδρομών χάρτη 
         for (var i = 0; i < routeHistory.length; i++) {
@@ -298,7 +305,9 @@ nearestpoi.addEventListener('click', showDestinations);
             }
         });
 
-        var eScooterIcon = new LeafIcon({ iconUrl: '../images/scooters.PNG' });
+        var eScooterIcon = new LeafIcon({
+            iconUrl: '../images/scooters.PNG'
+        });
 
         for (var i = 0; i < stations.length; i++) {
             var stationMarker = {
@@ -438,6 +447,7 @@ nearestpoi.addEventListener('click', showDestinations);
     }
 
     function getNearestPointsOfInterest(chosenStation) {
+
         var list = [];
         var poi = pointsOfInterest;
 
@@ -445,14 +455,65 @@ nearestpoi.addEventListener('click', showDestinations);
             var distance = L.latLng([chosenStation.lat, chosenStation.lng])
                 .distanceTo([poi[i].lat, poi[i].lng]);
 
-            if (distance < maxDistance)
+            if (distance < maxDistance) {
+
                 list.push(poi[i]);
+
+            
+
+            }
 
 
         }
 
         return list;
     }
+
+function getandDeleteNearestPointInFB(uid){
+
+db.collection("destinations").where("uid", "==", uid)
+    .get()
+    .then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc.id, " => ", doc.data());
+            DeleteNearestPointInFB (doc.id)
+        });
+    })
+    .catch(function(error) {
+        console.log("Error getting documents: ", error);
+    });
+}
+
+function DeleteNearestPointInFB(docRef){
+
+db.collection("destinations").doc(docRef).delete().then(function() {
+    console.log("Document successfully deleted!");
+}).catch(function(error) {
+    console.error("Error removing document: ", error);
+});
+
+}
+
+    function setNearestPointsInFB(np, uid) {
+    
+
+              //  for (var i = 0; i < np.length; i++) {
+    //alert(uid + "--" + np[i].name.gr + "----" + np[i].points)
+        db.collection('destinations').doc(uid).set({
+                uid: uid,
+              point : np,
+             timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .catch(function(error) {
+                console.error("Error adding document: ", error);
+            });
+
+//}
+    }
+
+
+
 
     function displayNearestPoints(npoints) {
         console.log("-- -- -- -- --Nearest Points-- -- -- -- -- -- -- -");
@@ -481,21 +542,27 @@ nearestpoi.addEventListener('click', showDestinations);
 
         for (var i = 0; i < npoints.length; i++) {
             if (npoints[i].category === "culture")
-                var poiIcon = new LeafIcon({ iconUrl: '../images/icons8-greek-pillar-capital-128.png' });
+                var poiIcon = new LeafIcon({
+                    iconUrl: '../images/icons8-greek-pillar-capital-128.png'
+                });
             else if (npoints[i].category === "entertainment") {
-                var poiIcon = new LeafIcon({ iconUrl: '../images/icons8-food-100.png' });
+                var poiIcon = new LeafIcon({
+                    iconUrl: '../images/icons8-food-100.png'
+                });
             }
 
             var poi = L.marker([npoints[i].lat, npoints[i].lng], {
                     icon: poiIcon,
                     zIndexOffset: 1000,
                     opacity: 0.7,
-                    properties: { id: + npoints[i].id }
+                    properties: {
+                        id: +npoints[i].id
+                    }
                 }).bindPopup(npoints[i].category + " " + npoints[i].name.gr)
                 .addTo(myMap);
             poiOnMap.push(poi);
 
-            poi.addEventListener('click', showPOIDetails); 
+            poi.addEventListener('click', showPOIDetails);
 
         }
     }
@@ -533,7 +600,9 @@ nearestpoi.addEventListener('click', showDestinations);
         });
 
 
-        var scooterIcon = new LeafIcon({ iconUrl: '../images/icons8-kick-scooter-emoji-48.png' });
+        var scooterIcon = new LeafIcon({
+            iconUrl: '../images/icons8-kick-scooter-emoji-48.png'
+        });
 
         for (var i = 0; i < scooters.length; i++) {
             var scooterMarker = {
@@ -541,22 +610,24 @@ nearestpoi.addEventListener('click', showDestinations);
                     icon: scooterIcon,
                     zIndexOffset: 1000 + i,
                     opacity: 1,
-                    properties: { id: + scooters[i].id }
-                   
+                    properties: {
+                        id: +scooters[i].id
+                    }
+
                 }),
 
                 "isOnMap": false
             };
             var html = getScooterMarkerPopUpHTMLContent(scooters[i].id);
-scooterMarker.marker.addEventListener('click', showEscooterDetails); 
+            scooterMarker.marker.addEventListener('click', showEscooterDetails);
             //scooterMarker.marker.bindPopup("scooterID: " + scooters[i].id);
-        //    scooterMarker.marker.bindPopup('<dialog class="mdl-dialog"> <h4 class="mdl-dialog__title">Allow data collection?</h4><div class="mdl-dialog__content"><p> Allowing us to collect data will let us get you the information you want faster.</p></div></dialog>');
-//marker.bindPopup(popupContent).openPopup();
-          //  if (distance < 50 && scooters[i].stationID === nearestStation.stationID) {
-                scooterMarker.isOnMap = true;
-              //   alert("to vrika")
-                scooterMarker.marker.addTo(myMap);
-          // }
+            //    scooterMarker.marker.bindPopup('<dialog class="mdl-dialog"> <h4 class="mdl-dialog__title">Allow data collection?</h4><div class="mdl-dialog__content"><p> Allowing us to collect data will let us get you the information you want faster.</p></div></dialog>');
+            //marker.bindPopup(popupContent).openPopup();
+            //  if (distance < 50 && scooters[i].stationID === nearestStation.stationID) {
+            scooterMarker.isOnMap = true;
+            //   alert("to vrika")
+            scooterMarker.marker.addTo(myMap);
+            // }
 
             scooterMarkers[scooters[i].id] = scooterMarker;
 
@@ -568,77 +639,77 @@ scooterMarker.marker.addEventListener('click', showEscooterDetails);
         }
     }
 
-function showEscooterDetails(e){
+    function showEscooterDetails(e) {
 
-      $('ol').empty()
+        $('ol').empty()
 
- var marker = e.target;
- esccoterid=marker.options.properties.id;
-    var dialog = document.querySelector('#dialog-scooter');
+        var marker = e.target;
+        esccoterid = marker.options.properties.id;
+        var dialog = document.querySelector('#dialog-scooter');
 
-var paragraph = document.getElementById("dialog-text");
-paragraph.innerHTML =("Το χαρακτηριστικά του πατινιού είναι " );
-//paragraph.append (" Επίπεδο μπαταρίας: " +scooters[esccoterid].battery );
+        var paragraph = document.getElementById("dialog-text");
+        paragraph.innerHTML = ("Το χαρακτηριστικά του πατινιού είναι ");
+        //paragraph.append (" Επίπεδο μπαταρίας: " +scooters[esccoterid].battery );
 
-$("ol").append("<li>Κωδικός Πατινιού: <b>sc" +scooters[esccoterid].id+"</b> </li>");
+        $("ol").append("<li>Κωδικός Πατινιού: <b>sc" + scooters[esccoterid].id + "</b> </li>");
 
-$("ol").append("<li>Επίπεδο μπαταρίας:<b> " +scooters[esccoterid].battery+"%</b> </li>");
+        $("ol").append("<li>Επίπεδο μπαταρίας:<b> " + scooters[esccoterid].battery + "%</b> </li>");
 
-$("ol").append("<li>Υπολοιπόμενα χιλιόμετρα:<b> " +scooters[esccoterid].distance+"</b> </li>");
+        $("ol").append("<li>Υπολοιπόμενα χιλιόμετρα:<b> " + scooters[esccoterid].distance + "</b> </li>");
 
-      dialog.showModal();
+        dialog.showModal();
 
-      dialog.querySelector('.close').addEventListener('click', function() {
-      dialog.close();
-      });
-}
+        dialog.querySelector('.close').addEventListener('click', function() {
+            dialog.close();
+        });
+    }
 
-function showPOIDetails(e){
+    function showPOIDetails(e) {
 
-var poi;
- var marker = e.target;
- poi_id=marker.options.properties.id;
+        var poi;
+        var marker = e.target;
+        poi_id = marker.options.properties.id;
 
- for (var i = 0; i < np.length; i++) {
-        if(np[i].id==poi_id){
-            poi =np[i]
-            break;
+        for (var i = 0; i < np.length; i++) {
+            if (np[i].id == poi_id) {
+                poi = np[i]
+                break;
+            }
+
+
         }
 
+        var dialog = document.querySelector('#dialog-poi');
+        $(".mdl-card__title ").css('background-image', 'url(' + poi.photo + ')');
+        $(".poi-name").text(poi.name.gr);
+        $(".poi-description").text(poi.description);
+        $(".poi-ctg-name").text(poi.category);
+        var src;
+        if (poi.category == 'culture') src = '../images/icons8-greek-pillar-capital-128.png';
+        else src = '../images/icons8-food-100.png';
+        $(".poi-catg-photo").attr("src", src);
 
- }
-
-    var dialog = document.querySelector('#dialog-poi');
-$(".mdl-card__title ").css('background-image', 'url(' + poi.photo + ')');
-$(".poi-name").text(poi.name.gr);
-$(".poi-description").text(poi.description);
-$(".poi-ctg-name").text(poi.category);
-var src;
-if(poi.category=='culture') src= '../images/icons8-greek-pillar-capital-128.png';
-    else src='../images/icons8-food-100.png';
-$(".poi-catg-photo").attr("src", src);
-
-var el = document.querySelector('.poi-badges');
-el.setAttribute('data-badge',poi.points);
-//$('.poi-badges').data('badge',poi.points); //setter
+        var el = document.querySelector('.poi-badges');
+        el.setAttribute('data-badge', poi.points);
+        //$('.poi-badges').data('badge',poi.points); //setter
 
 
-dialog.showModal();
+        dialog.showModal();
 
-      dialog.querySelector('.close-poi').addEventListener('click', function() {
-      dialog.close();
-      });
+        dialog.querySelector('.close-poi').addEventListener('click', function() {
+            dialog.close();
+        });
 
-}
+    }
 
 
     function getScooterMarkerPopUpHTMLContent(scooterID) {
-       var html = new Array;
+        var html = new Array;
         html.push('<button onclick="scooterButtonClick(this)" class="scooters" id = "sc' + scooterID + '">');
         html.push('Ενοικίασέ με!');
         html.push('</button>');
 
-        return html.join(''); 
+        return html.join('');
 
 
 
@@ -664,8 +735,24 @@ function scooterButtonClick(buttonElement) {
 
 
 
- function showDestinations(e) {
+function showDestinations(e) {
 
 
-    //alert("HERE");
+if(uid==null) alert("Login first");
+
+    /*
+        if (np == null) alert ("Δεν έχουν οριστεί τα σημεία ενδιαφέροντος");
+
+        else {
+             window.location.href = "../pages/destinations.html";
+
+            for (var i = 0; i < np.length; i++) {
+                console.log(np[i].id + "---" + np[i].name.gr);
+
+
+
+            }
+
+        }
+    */
 }
