@@ -78,7 +78,7 @@ var stations;
 var pointsOfInterest;
 var scooters;
 var np;
-var  db = firebase.firestore();
+var db = firebase.firestore();
 
 
 const fSt = fetch('../json/stations.json').then(function(kostas) {
@@ -121,6 +121,7 @@ then(function() {
 
 const maxDistance = 5000;
 
+
 var routeHistory = [];
 var el;
 var eButton;
@@ -138,6 +139,7 @@ var stationMarkers = {};
 var scooterMarkers = {};
 
 function initialize() {
+
     var myMap = L.map('map').setView([35.32681169624291, 25.138424634933475], 13);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
         maxZoom: 18,
@@ -226,9 +228,11 @@ function initialize() {
 
         //findRoutes(e.latlng, getNearestStation(e.latlng));
         np = getNearestPointsOfInterest(getNearestStation(e.latlng));
-   /* Set the current poi in destinations of the current user */
-        var uid = firebase.auth().currentUser.uid;
-        setNearestPointsInFB(np, uid);
+        /* Check if the user is logged */
+        if (isUserSignedIn) {
+            var uid = getUserUid();
+            setNearestPointsInFB(np, uid);
+        }
         displayNearestPoints(np);
         displayScooters(getNearestStation(e.latlng), e.latlng);
         showRoute();
@@ -451,11 +455,13 @@ function initialize() {
 
     }
 
-   function getNearestPointsOfInterest(chosenStation) {
+    function getNearestPointsOfInterest(chosenStation) {
         var list = [];
         var poi = pointsOfInterest;
 
-        for (var i = 0; i < poi.length; i++) {
+        for (var i = 0; i < poi.length;
+
+            i++) {
             var distance = L.latLng([chosenStation.lat, chosenStation.lng])
                 .distanceTo([poi[i].lat, poi[i].lng]);
 
@@ -472,50 +478,23 @@ function initialize() {
         return list;
     }
 
-function getandDeleteNearestPointInFB(uid){
-
-db.collection("destinations").where("uid", "==", uid)
-    .get()
-    .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-            // doc.data() is never undefined for query doc snapshots
-            console.log(doc.id, " => ", doc.data());
-            DeleteNearestPointInFB (doc.id)
-        });
-    })
-    .catch(function(error) {
-        console.log("Error getting documents: ", error);
-    });
-}
-
-function DeleteNearestPointInFB(docRef){
-
-db.collection("destinations").doc(docRef).delete().then(function() {
-    console.log("Document successfully deleted!");
-}).catch(function(error) {
-    console.error("Error removing document: ", error);
-});
-
-}
 
     function setNearestPointsInFB(np, uid) {
-    
 
-              //  for (var i = 0; i < np.length; i++) {
-    //alert(uid + "--" + np[i].name.gr + "----" + np[i].points)
+
+        //  for (var i = 0; i < np.length; i++) {
+        //alert(uid + "--" + np[i].name.gr + "----" + np[i].points)
         db.collection('destinations').doc(uid).set({
                 uid: uid,
-              point : np,
-             timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                point: np,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
             })
             .catch(function(error) {
                 console.error("Error adding document: ", error);
             });
 
-//}
+        //}
     }
-
-
 
 
     function displayNearestPoints(npoints) {
@@ -739,9 +718,18 @@ function scooterButtonClick(buttonElement) {
 
 
 function showDestinations(e) {
+//Check if user is logged and if he has data in collection destinations
+    if (isUserSignedIn()) {
 
 
-if(uid==null) alert("Login first");
+
+        window.location.href = "../pages/destinations.html";
+
+    } else
+        alert("Πρέπει να συνδεθείς πρώτα");
+
+
+    //if(uid==null) alert("Login first");
 
     /*
         if (np == null) alert ("Δεν έχουν οριστεί τα σημεία ενδιαφέροντος");
@@ -759,3 +747,4 @@ if(uid==null) alert("Login first");
         }
     */
 }
+

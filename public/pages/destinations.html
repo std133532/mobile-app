@@ -58,14 +58,9 @@ limitations under the License
     <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.js"></script>
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet-easybutton@2/src/easy-button.css">-->
-    <link rel="stylesheet" href="../styles/easy-button-kgr.css">
-    <link rel="stylesheet" href="../styles/stations.css">
+   
     <!-- we need to tell the mobile browser to disable unwanted scaling of the page and set it to its actual size by placing the following line in the head section or our HTML page:-->
-    <style>
-    .leaflet-control-container .leaflet-routing-container-hide {
-    display: none;
-    }
-    </style>
+   
     <script>
     // Your web app's Firebase configuration
     var firebaseConfig = {
@@ -81,6 +76,8 @@ limitations under the License
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
+
+
     </script>
   </head>
   <body>
@@ -147,86 +144,20 @@ limitations under the License
         <div class="mdl-grid demo-content">
           <div class="mdl-layout mdl-js-layout">
             <!-- START OF LIST -->
-            <div class="demo-list-action mdl-list">
-              <div class="mdl-list__item">
-                <span class="mdl-list__item-primary-content">
-                  <i class="material-icons mdl-list__item-avatar">person</i>
-                  <span>Bryan Cranston</span>
-                </span>
-                <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star</i></a>
-              </div>
-              <div class="mdl-list__item">
-                <span class="mdl-list__item-primary-content">
-                  <i class="material-icons mdl-list__item-avatar">person</i>
-                  <span>Aaron Paul</span>
-                </span>
-                <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star</i></a>
-              </div>
-              <div class="mdl-list__item">
-                <span class="mdl-list__item-primary-content">
-                  <i class="material-icons mdl-list__item-avatar">person</i>
-                  <span>Bob Odenkirk</span>
-                </span>
-                <span class="mdl-list__item-secondary-content">
-                  <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star</i></a>
-                </span>
-              </div>
-            </div>
-            <!-- END OF LIST -->
+            <ul class="demo-list-control mdl-list" id="destinations-list">
+ </ul>
+
+ <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" data-upgraded=",MaterialButton">
+  ΠΡΟΣΘΗΚΗ ΔΙΑΔΡΟΜΗΣ
+</button>
           </div>
+
         </div>
+
       </main>
-      <!--Dialog for escooters -->
-      
-      <dialog class="mdl-dialog" id="dialog-scooter">
-      <h4 class="mdl-dialog__title">Επιλογή Πατινιού</h4>
-      <div class="mdl-dialog__content" >
-        <p id="dialog-text">
-        </p>
-        <ol>
-          
-        </ol>
-      </div>
-      <div class="mdl-dialog__actions">
-        <button type="button" class="mdl-button">Συνεχεια</button>
-        <button type="button" class="mdl-button close">Επιστροφη</button>
-      </div>
-      </dialog>
-      <!-- End of dialog of escooters -->
-      <!-- Card of POI -->
-      <dialog class="mdl-dialog" id="dialog-poi">
-      <h4 class="mdl-dialog__title">Πληροφορίες</h4>
-      <div class="mdl-dialog__content" >
-        <p id="dialog-text">
-          <div class="demo-card-square mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title mdl-card--expand">
-              <h2 class="mdl-card__title-text poi-name"></h2>
-            </div>
-            <div class="mdl-card__supporting-text poi-description">
-              
-            </div>
-            <div class="mdl-card__actions mdl-card--border">
-              <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-                View Updates
-              </a>
-              <span class="mdl-badge poi-badges" data-badge="4">Πόντοι</span>
-            </div>
-            <div>
-              <span class="mdl-chip poi-ctg">
-                <img class="mdl-chip__contact poi-catg-photo" src=""></img>
-                <span class="mdl-chip__text poi-ctg-name"></span>
-              </span>
-            </div>
-          </div>
-        </p>
-      </div>
-      <div class="mdl-dialog__actions">
-        <button type="button" class="mdl-button close-poi">Επιστροφη</button>
-      </div>
-      
-      </dialog>
-      <!-- End of card POI -->
+   
     </div>
+
     <!-- Import and configure the Firebase SDK -->
     <!-- These scripts are made available when the app is served or deployed on Firebase Hosting -->
     <!-- If you do not want to serve/host your project using Firebase Hosting see https://firebase.google.com/docs/web/setup -->
@@ -239,6 +170,7 @@ limitations under the License
     <script src="/__/firebase/init.js"></script>
     <!--  <script src="scripts/index.js"></script> -->
     <script src="../scripts/main.js"></script>
+
   <!--  <script src="../scripts/routes.js"></script> -->
   </body>
 </html>
